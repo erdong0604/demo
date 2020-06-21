@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        img{
+            width: 100%;
+            height: 300px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="div">
+        <img data-src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfynwi1sejj30ij0nrdx0.jpg" />
+        <img data-src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfynwi1sejj30ij0nrdx0.jpg" />
+        <img data-src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfynwi1sejj30ij0nrdx0.jpg" />
+        <img data-src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfynwi1sejj30ij0nrdx0.jpg" />
+        <img data-src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfynwi1sejj30ij0nrdx0.jpg" />
+        <img data-src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfynwi1sejj30ij0nrdx0.jpg" />
+        <img data-src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfynwi1sejj30ij0nrdx0.jpg" />
+        <img data-src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfynwi1sejj30ij0nrdx0.jpg" />
+        <img data-src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfynwi1sejj30ij0nrdx0.jpg" />
+        <img data-src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfynwi1sejj30ij0nrdx0.jpg" />
+        <img data-src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfynwi1sejj30ij0nrdx0.jpg" />
+    </div>
+    <script>
+        let images = document.querySelectorAll('img');
+
+        class LazyLoad{
+
+            constructor(options){
+                //懒加载的元素
+                this.el = [...options.el];
+                //默认图片
+                this.defaultSrc = options.default;
+                this.init();
+            }
+
+            // 初始化
+            init(){
+                this.el.forEach(el => {
+                    el.src = this.defaultSrc;
+                });
+                this.load();
+                let throttleFuc = this.throttle(this.load,100);
+                window.addEventListener('scroll',throttleFuc.bind(this));
+            }
+
+            // 加载图片
+            load(){
+                let windowHeight = document.documentElement.clientHeight;
+                this.el.forEach(el => {
+                    let elTop = el.getBoundingClientRect().top;
+                    let elBtm = el.getBoundingClientRect().bottom;
+                    let realSrc = el.dataset.src;
+                    if(elTop - windowHeight<0&&elBtm > 0){
+                        
+                        //进入可视区域
+                        if(realSrc){
+                            // 未懒加载过
+                            el.src = realSrc;
+                            el.removeAttribute('data-src')
+                        }
+                    }
+                });
+            }
+            //节流
+            throttle(fn,delay){
+                let timer;    // 定时器
+
+                return function(...args){
+                    let context = this;
+                    // 如果timer存在，说明函数还未该执行 也就是距离上次函数执行未间隔指定的时间
+                    if(timer) return;
+                    // 如果函数执行之后还有函数还在触发，再延迟执行。
+                    timer = setTimeout(function(...args){
+                        // 当函数执行时，让timer为null。
+                        timer = null;
+                        fn.apply(context,args);
+                    },delay);
+                }
+            }
+
+
+        }
+
+        new LazyLoad({
+            el:document.querySelectorAll('img'),
+            default:'https://tva1.sinaimg.cn/large/007S8ZIlgy1gfyof9vr4mj3044032dfl.jpg'
+        });
+    </script>
+</body>
+</html>
