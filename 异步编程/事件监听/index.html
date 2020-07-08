@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件监听</title>
+</head>
+<body>
+    <img id="img" src="https://en.js.cx/clipart/train.gif?speed=1&cache=0">
+    <script>
+        let img = document.getElementById('img');
+        document.addEventListener('DOMContentLoaded',function(){
+           console.log(img.width);
+           console.log(document.readyState)
+        })
+        window.onload = function(){
+            console.log(img.width);
+            console.log(document.readyState)
+        }
+        window.addEventListener('beforeunload',function(){
+            event.preventDefault();
+            event.returnValue = '';
+        })
+    </script>
+</body>
+</html>
