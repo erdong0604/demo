@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <title>WebSocket</title>
+</head>
+<body>
+    <button id="btn">发送消息</button>
+    <script type="module">
+        import ajax from './../cors/index.js'
+
+        let btn = document.getElementById('btn');
+        btn.onclick = function(){
+            scoket.emit('message','这是客户端的消息')
+        }
+        
+        const scoket = io('ws://localhost:3002'); 
+        
+        scoket.on('message', (msg) => {
+            console.log(msg)
+        })
+        
+        ajax({
+            url:'http://localhost:3002',
+            methods:'get',
+            params:{}
+        })
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSONP</title>
+</head>
+<body>
+    <!-- <script  type="module">
+        import ajax from './../ajax/index.js'
+        const url = 'http://localhost:3000/jsonp?cb=getData';
+        ajax({
+            url,
+            methods:'get'
+        }).then(res => {
+            console.log(res)
+        }).catch(console.log)
+    </script> -->
+    <script type="module">
+        import jsonp from './index.js';
+        jsonp({
+            url:'http://localhost:3000/jsonp',
+            params:{
+                a:1,
+                b:2
+            },
+            cb:'getData'
+        }).then(res => {
+            console.log(res)
+        }).catch(console.log)
+    </script>
+    <!-- <script>
+        function getData(data){
+            console.log(data)
+        }
+    </script>
+    <script src="http://localhost:3000/jsonp?cb=getData"></script> -->
+    
+</body>
+</html>
